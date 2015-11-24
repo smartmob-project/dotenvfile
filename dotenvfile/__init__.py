@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+"""Parser for ``.env`` files.
+
+Implements `Smartmob RFC 2 <http://smartmob-rfc.readthedocs.org/en/latest/2-dotenv.html>`_."""
 
 import re
 
@@ -68,6 +71,7 @@ def _parse_envfile_line(line):
 
 
 def loads(content):
+    """Loads variable definitions from a string."""
     lines = _group_lines(line for line in content.split('\n'))
     lines = [
         (i, _parse_envfile_line(line))
@@ -88,8 +92,10 @@ def loads(content):
     return {k: v for _, (k, v) in lines}
 
 def load(stream):
+    """Loads variable definitions from a file-like object."""
     return loads(stream.read().decode('utf-8'))
 
 def loadfile(path):
+    """Loads variable definitions from a file."""
     with open(path, 'rb') as stream:
         return load(stream)
